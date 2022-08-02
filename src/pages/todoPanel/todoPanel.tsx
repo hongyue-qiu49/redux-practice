@@ -1,22 +1,20 @@
 import React from "react";
 import "./todoPanel.css"
+import {useAppSelector} from "../../app/hooks";
+import {selectTodos} from "../../reducer/todoSlice";
+import TodoItem from "./todoItem/todoItem";
 
 const TodoPanel = () => {
+
+    const todos = useAppSelector(selectTodos)
 
     return <div className="todo-panel">
         <section className="todo-list">
             <h3>todo list</h3>
-            <div className="todo-item">
-                <div className="todo-item-content">
-                    <input type="checkbox" id="index"  className="todo-item-content-checkbox" />
-                    <label className="todo-item-content-description">learn redux</label>
-                </div>
-                <select className="todo-item-priority">
-                    <option>normal</option>
-                    <option>emergency</option>
-                    <option>important</option>
-                </select>
-            </div>
+            {todos.todos.map(item =>
+                <TodoItem isChecked={item.completed} description={item.text} priority={item.priority} />
+                )
+            }
         </section>
     </div>
 }

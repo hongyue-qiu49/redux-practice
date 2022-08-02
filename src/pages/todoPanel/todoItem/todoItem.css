@@ -1,0 +1,30 @@
+.todo-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 0 20px;
+    padding: 12px 0;
+    border-bottom: 1px solid #e7e7e7;
+}
+
+.todo-item .todo-item-content-description {
+    margin-left: 8px;
+}
+
+.todo-item-content {
+    display: flex;
+    align-items: center;
+}
+
+.todo-item-priority{
+    width: 120px;
+    height: 32px;
+    border-color: grey;
+    border-radius: 4px;
+}
+
+.todo-item-content-checkbox {
+    width: 20px;
+    height: 20px;
+    border-color: grey;
+}
