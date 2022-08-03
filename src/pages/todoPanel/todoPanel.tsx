@@ -1,10 +1,10 @@
 import React, { ChangeEvent } from "react";
 import "./todoPanel.css"
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
-import { selectTodos, markEvent, selectPriority, filterByCompletion } from "../../reducer/todoSlice";
+import { selectTodos, markEvent, selectPriority, filterByCompletion, filterByPriority } from "../../reducer/todoSlice";
 import TodoItem from "./todoItem/todoItem";
 import TodoControlItem from "./todoControlItem/todoControlItem";
-import { filterCompletionOptions, FilterTodoEnum } from "../../constant/todo";
+import { filterCompletionOptions, filterPriorityOptions, FilterTodoEnum } from "../../constant/todo";
 
 const TodoPanel = () => {
 
@@ -19,8 +19,12 @@ const TodoPanel = () => {
         dispatch(selectPriority({index, value: e.target.value}))
     }
 
-    const handleOptionClick = (type: FilterTodoEnum) => {
+    const handleCompletionOptionClick = (type: FilterTodoEnum) => {
         dispatch(filterByCompletion(type))
+    }
+
+    const handlePriorityOptionClick = (type: FilterTodoEnum) => {
+        dispatch(filterByPriority(type))
     }
 
     return <div className="todo-panel">
@@ -44,7 +48,14 @@ const TodoPanel = () => {
                 title="filter by completion: "
                 type="completion"
                 options={filterCompletionOptions}
-                onOptionClick={handleOptionClick}
+                onOptionClick={handleCompletionOptionClick}
+            />
+        {/*    filterPriorityOptions*/}
+            <TodoControlItem
+                title="filter by priority: "
+                type="priority"
+                options={filterPriorityOptions}
+                onOptionClick={handlePriorityOptionClick}
             />
         </section>
     </div>
