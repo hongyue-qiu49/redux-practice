@@ -1,8 +1,10 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { RootState } from '../app/store';
+import {createSlice, PayloadAction} from '@reduxjs/toolkit';
+import {RootState} from '../app/store';
+import {FilterTodoEnum} from "../constant/todo";
 
 export interface TodosState {
   todos: todo[];
+  filterByCompletion: string,
 }
 
 type todo = {
@@ -38,7 +40,8 @@ const initialState: TodosState = {
       completed: false,
       priority: "important",
     },
-  ]
+  ],
+  filterByCompletion: "all"
 }
 
 export const todoSlice = createSlice({
@@ -47,22 +50,32 @@ export const todoSlice = createSlice({
   // The `reducers` field lets us define reducers and generate associated actions
   reducers: {
     markEvent: (state, action: PayloadAction<number>) => {
-      console.log(">>>>>>",state)
       state.todos = state.todos.map(i => i.index === action.payload? {
           ...i,
           completed:!i.completed
         } : i
       )
     },
+    filterByCompletion: (state, action: PayloadAction<FilterTodoEnum>) => {
+      state.filterByCompletion = action.payload
+    },
   },
 });
 
-export const { markEvent } = todoSlice.actions;
+export const { markEvent, filterByCompletion } = todoSlice.actions;
 
 
-export const selectTodos = (state: RootState) => state.todos;
-export const selectedTodos = (state: RootState) =>
-  state.todos.todos.filter((item: { completed: boolean; }) => item.completed);
+export const selectTodos = (state: RootState) => {
+  const filterByCompletion = state.todo.filterByCompletion
+  return state.todo.todos.filter(todo => {
+    if (filterByCompletion === FilterTodoEnum.Complete) {
+      return todo.completed
+    } else if (filterByCompletion === FilterTodoEnum.NotComplete) {
+      return !todo.completed
+    }
+    return true
+  })
+}
 
 
 

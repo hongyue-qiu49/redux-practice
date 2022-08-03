@@ -1,8 +1,10 @@
 import React from "react";
 import "./todoPanel.css"
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
-import { selectTodos, markEvent } from "../../reducer/todoSlice";
+import { selectTodos, markEvent, filterByCompletion } from "../../reducer/todoSlice";
 import TodoItem from "./todoItem/todoItem";
+import TodoControlItem from "./todoControlItem/todoControlItem";
+import { filterCompletionOptions, FilterTodoEnum } from "../../constant/todo";
 
 const TodoPanel = () => {
 
@@ -13,12 +15,16 @@ const TodoPanel = () => {
         dispatch(markEvent(index))
     }
 
+    const handleOptionClick = (type: FilterTodoEnum) => {
+        dispatch(filterByCompletion(type))
+    }
+
     return <div className="todo-panel">
         <section className="todo-list">
             <h3>todo list</h3>
-            {todos.todos
-                .map(item =>
+            {todos.map((item,index) =>
                     <TodoItem
+                        key={index}
                         isChecked={item.completed}
                         description={item.text}
                         onCheckboxClicked={() => handleTodoItemCheckboxClicked(item.index ?? 0)}
@@ -28,21 +34,12 @@ const TodoPanel = () => {
             }
         </section>
         <section className="todo-control">
-            <div className="todo-control-item">
-                <h5 className="todo-control-item-title">filter by completion: </h5>
-                <div className="todo-control-item-option">
-                    <input type="radio" name="complete" className="todo-control-item-radio" defaultChecked={true} />
-                    <label>all</label>
-                </div>
-                <div className="todo-control-item-option">
-                    <input type="radio" name="complete" className="todo-control-item-radio" />
-                    <label>complete</label>
-                </div>
-                <div className="todo-control-item-option">
-                    <input type="radio" name="complete" className="todo-control-item-radio" />
-                    <label>not complete</label>
-                </div>
-            </div>
+            <TodoControlItem
+                title="filter by completion: "
+                type="completion"
+                options={filterCompletionOptions}
+                onOptionClick={handleOptionClick}
+            />
         </section>
     </div>
 }

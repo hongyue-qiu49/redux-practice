@@ -1,0 +1,20 @@
+.todo-control-item {
+    width: 240px;
+    border-left: 3px dashed #e7e7e7;
+    /*border: 1px solid crimson;*/
+}
+
+.todo-control-item-title {
+    margin: 0 8px;
+}
+
+.todo-control-item-option {
+    display: flex;
+    align-items: center;
+}
+
+.todo-control-item-option .todo-control-item-radio {
+    width: 16px;
+    height: 16px;
+    margin: 0 8px;
+}
