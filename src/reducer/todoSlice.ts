@@ -3,15 +3,20 @@ import {RootState} from '../app/store';
 import {FilterTodoEnum} from "../constant/todo";
 
 export interface TodosState {
-  todos: todo[];
+  todos: Todo[];
   filterByCompletion: string,
 }
 
-type todo = {
+type Todo = {
   index?: number,
   text: string,
   completed: boolean,
-  priority: 'normal' | 'important' | 'emergency',
+  priority: string,
+}
+
+type PrioritySelect = {
+  index: number,
+  value: string,
 }
 
 const initialState: TodosState = {
@@ -56,13 +61,20 @@ export const todoSlice = createSlice({
         } : i
       )
     },
-    filterByCompletion: (state, action: PayloadAction<FilterTodoEnum>) => {
+    selectPriority: (state, action: PayloadAction<PrioritySelect>) => {
+      state.todos = state.todos.map(i => i.index === action.payload.index? {
+            ...i,
+            priority: action.payload.value
+          } : i
+      )
+    },
+    filterByCompletion: (state, action: PayloadAction<string>) => {
       state.filterByCompletion = action.payload
     },
   },
 });
 
-export const { markEvent, filterByCompletion } = todoSlice.actions;
+export const { markEvent, selectPriority, filterByCompletion } = todoSlice.actions;
 
 
 export const selectTodos = (state: RootState) => {

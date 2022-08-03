@@ -1,7 +1,7 @@
-import React from "react";
+import React, { ChangeEvent } from "react";
 import "./todoPanel.css"
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
-import { selectTodos, markEvent, filterByCompletion } from "../../reducer/todoSlice";
+import { selectTodos, markEvent, selectPriority, filterByCompletion } from "../../reducer/todoSlice";
 import TodoItem from "./todoItem/todoItem";
 import TodoControlItem from "./todoControlItem/todoControlItem";
 import { filterCompletionOptions, FilterTodoEnum } from "../../constant/todo";
@@ -15,6 +15,10 @@ const TodoPanel = () => {
         dispatch(markEvent(index))
     }
 
+    const handleTodoItemPrioritySelected = (e: ChangeEvent<HTMLSelectElement>,index: number) => {
+        dispatch(selectPriority({index, value: e.target.value}))
+    }
+
     const handleOptionClick = (type: FilterTodoEnum) => {
         dispatch(filterByCompletion(type))
     }
@@ -25,9 +29,11 @@ const TodoPanel = () => {
             {todos.map((item,index) =>
                     <TodoItem
                         key={index}
+                        index={index}
                         isChecked={item.completed}
                         description={item.text}
                         onCheckboxClicked={() => handleTodoItemCheckboxClicked(item.index ?? 0)}
+                        onPrioritySelect={(e) => handleTodoItemPrioritySelected(e, item.index ?? 0)}
                         priority={item.priority}
                     />
                 )

@@ -1,26 +1,23 @@
-import React from "react";
+import React, { ChangeEvent } from "react";
 import "./todoItem.css"
 
 interface TodoItemProps {
-    key?: number,
+    index: number,
     isChecked: boolean,
     description: string,
-    priority: 'normal' | 'emergency' | 'important',
+    priority: string,
     onCheckboxClicked: () => void,
+    onPrioritySelect: (event: ChangeEvent<HTMLSelectElement>) => void,
 }
 
-const TodoItem = ({key, isChecked, description, priority, onCheckboxClicked}:TodoItemProps) => {
-
-    const handleClicked = () => {
-        onCheckboxClicked()
-    }
+const TodoItem = ({index, isChecked, description, priority, onCheckboxClicked, onPrioritySelect}:TodoItemProps) => {
 
     return <div className="todo-item">
         <div className="todo-item-content">
-            <input type="checkbox" id={description+key} className="todo-item-content-checkbox" checked={isChecked} onChange={handleClicked} />
-            <label className="todo-item-content-description" htmlFor={description+key}>{description}</label>
+            <input type="checkbox" id={description+index} className="todo-item-content-checkbox" checked={isChecked} onChange={onCheckboxClicked} />
+            <label className="todo-item-content-description" htmlFor={description+index}>{description}</label>
         </div>
-        <select className="todo-item-priority" value={priority}>
+        <select className="todo-item-priority" value={priority} onChange={e => onPrioritySelect(e)}>
             <option>normal</option>
             <option>emergency</option>
             <option>important</option>
