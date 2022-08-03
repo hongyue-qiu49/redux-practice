@@ -18,3 +18,34 @@
     height: 400px;
     border: 1px solid #db7093;
 }
+
+.todo-control {
+    height: 160px;
+    text-align: left;
+    padding: 20px;
+    display: flex;
+    font-size: 18px;
+    line-height: 1.8;
+    justify-content: space-evenly;
+}
+
+.todo-control-item {
+    width: 240px;
+    border-left: 3px dashed #e7e7e7;
+    /*border: 1px solid crimson;*/
+}
+
+.todo-control-item-title {
+    margin: 0 8px;
+}
+
+.todo-control-item-option {
+    display: flex;
+    align-items: center;
+}
+
+.todo-control-item-option .todo-control-item-radio {
+    width: 16px;
+    height: 16px;
+    margin: 0 8px;
+}

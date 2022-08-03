@@ -27,6 +27,23 @@ const TodoPanel = () => {
                 )
             }
         </section>
+        <section className="todo-control">
+            <div className="todo-control-item">
+                <h5 className="todo-control-item-title">filter by completion: </h5>
+                <div className="todo-control-item-option">
+                    <input type="radio" name="complete" className="todo-control-item-radio" defaultChecked={true} />
+                    <label>all</label>
+                </div>
+                <div className="todo-control-item-option">
+                    <input type="radio" name="complete" className="todo-control-item-radio" />
+                    <label>complete</label>
+                </div>
+                <div className="todo-control-item-option">
+                    <input type="radio" name="complete" className="todo-control-item-radio" />
+                    <label>not complete</label>
+                </div>
+            </div>
+        </section>
     </div>
 }
 

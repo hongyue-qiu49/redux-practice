@@ -26,6 +26,18 @@ const initialState: TodosState = {
       completed: false,
       priority: "important",
     },
+    {
+      index: 3,
+      text: 'Go to park',
+      completed: false,
+      priority: "important",
+    },
+    {
+      index: 4,
+      text: 'Go to office',
+      completed: false,
+      priority: "important",
+    },
   ]
 }
 
@@ -49,6 +61,9 @@ export const { markEvent } = todoSlice.actions;
 
 
 export const selectTodos = (state: RootState) => state.todos;
+export const selectedTodos = (state: RootState) =>
+  state.todos.todos.filter((item: { completed: boolean; }) => item.completed);
+
 
 
 export default todoSlice.reducer;
