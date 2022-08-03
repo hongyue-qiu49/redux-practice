@@ -7,6 +7,10 @@
     border-bottom: 1px solid #e7e7e7;
 }
 
+.todo-item:hover {
+    background-color: #fff5f8;
+}
+
 .todo-item .todo-item-content-description {
     margin-left: 8px;
 }
@@ -14,6 +18,12 @@
 .todo-item-content {
     display: flex;
     align-items: center;
+}
+
+.todo-item-content:hover,
+.todo-item-content-checkbox:hover,
+.todo-item-content-description:hover {
+    cursor: pointer;
 }
 
 .todo-item-priority{

@@ -30,7 +30,8 @@ const TodoPanel = () => {
     return <div className="todo-panel">
         <section className="todo-list">
             <h3>todo list</h3>
-            {todos.map((item,index) =>
+            <div className="todo-list-content" >
+                {todos.map((item,index) =>
                     <TodoItem
                         key={index}
                         index={index}
@@ -40,23 +41,29 @@ const TodoPanel = () => {
                         onPrioritySelect={(e) => handleTodoItemPrioritySelected(e, item.index ?? 0)}
                         priority={item.priority}
                     />
-                )
-            }
+                )}
+            </div>
+
         </section>
         <section className="todo-control">
-            <TodoControlItem
-                title="filter by completion: "
-                type="completion"
-                options={filterCompletionOptions}
-                onOptionClick={handleCompletionOptionClick}
-            />
-        {/*    filterPriorityOptions*/}
-            <TodoControlItem
-                title="filter by priority: "
-                type="priority"
-                options={filterPriorityOptions}
-                onOptionClick={handlePriorityOptionClick}
-            />
+            <div>
+                <button>add todo</button>
+                <button>delete completed</button>
+            </div>
+            <div className="todo-control-options">
+                <TodoControlItem
+                    title="filter by completion: "
+                    type="completion"
+                    options={filterCompletionOptions}
+                    onOptionClick={handleCompletionOptionClick}
+                />
+                <TodoControlItem
+                    title="filter by priority: "
+                    type="priority"
+                    options={filterPriorityOptions}
+                    onOptionClick={handlePriorityOptionClick}
+                />
+            </div>
         </section>
     </div>
 }
