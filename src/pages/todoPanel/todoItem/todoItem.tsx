@@ -15,7 +15,11 @@ const TodoItem = ({index, isChecked, description, priority, onCheckboxClicked, o
     return <div className="todo-item">
         <div className="todo-item-content">
             <input type="checkbox" id={description+index} className="todo-item-content-checkbox" checked={isChecked} onChange={onCheckboxClicked} />
-            <label className="todo-item-content-description" htmlFor={description+index}>{description}</label>
+            <label
+                className={isChecked? "todo-item-content-description-checked" : "todo-item-content-description"}
+                htmlFor={description+index}>
+                {description}
+            </label>
         </div>
         <select className="todo-item-priority" value={priority} onChange={e => onPrioritySelect(e)}>
             <option>normal</option>
