@@ -75,25 +75,28 @@ export const todoSlice = createSlice({
   // The `reducers` field lets us define reducers and generate associated actions
   reducers: {
     markEvent: (state, action: PayloadAction<number>) => {
-      state.todos = state.todos.map(i => i.index === action.payload? {
-          ...i,
-          completed:!i.completed
-        } : i
+      const todos = state.todos.map(i => i.index === action.payload? {
+            ...i,
+            completed:!i.completed
+          } : i
       )
+
+      return {...state, todos}
     },
     selectPriority: (state, action: PayloadAction<PrioritySelect>) => {
-      state.todos = state.todos.map(i => i.index === action.payload.index? {
+      const todos = state.todos.map(i => i.index === action.payload.index? {
             ...i,
             priority: action.payload.value
           } : i
       )
+      return {...state, todos}
     },
-    filterByCompletion: (state, action: PayloadAction<string>) => {
-      state.filterByCompletion = action.payload
-    },
-    filterByPriority: (state, action: PayloadAction<string>) => {
-      state.filterByPriority = action.payload
-    },
+    filterByCompletion: (state, action: PayloadAction<string>) => (
+        {...state, filterByCompletion: action.payload}
+    ),
+    filterByPriority: (state, action: PayloadAction<string>) => (
+        {...state, filterByPriority: action.payload}
+    ),
   },
 });
 
