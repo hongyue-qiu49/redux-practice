@@ -20,7 +20,7 @@ type PrioritySelect = {
   value: string,
 }
 
-const initialState: TodosState = {
+export const initialState: TodosState = {
   todos: [
     {
       index: 1,
