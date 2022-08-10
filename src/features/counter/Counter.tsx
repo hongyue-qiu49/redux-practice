@@ -5,18 +5,34 @@ import {
   decrement,
   increment,
   incrementByAmount,
+  incrementUseReactQuery,
   incrementAsync,
   incrementIfOdd,
   selectCount,
 } from './counterSlice';
 import styles from './Counter.module.css';
+import {useQuery} from "react-query";
+import {fetchCount} from "./counterAPI";
+import {log} from "util";
 
 export function Counter() {
   const count = useAppSelector(selectCount);
   const dispatch = useAppDispatch();
   const [incrementAmount, setIncrementAmount] = useState('2');
+  const [isEnable, setIsEnable] = useState(false);
 
   const incrementValue = Number(incrementAmount) || 0;
+  const result = useQuery("increment",() => fetchCount(incrementValue),{
+    // The query will not execute until the userId exists
+    enabled: isEnable,
+  })
+
+  const test = async () => {
+    console.log("result1111111:", result)
+    setIsEnable(true)
+    await result.refetch()
+    console.log("result2222222:", result)
+  }
 
   return (
     <div>
@@ -28,7 +44,7 @@ export function Counter() {
         >
           -
         </button>
-        <span className={styles.value}>{count}</span>
+        {result.isLoading ?<span className={styles.value}>loading...</span>:<span className={styles.value}>{count}</span>}
         <button
           className={styles.button}
           aria-label="Increment value"
@@ -52,7 +68,10 @@ export function Counter() {
         </button>
         <button
           className={styles.asyncButton}
-          onClick={() => dispatch(incrementAsync(incrementValue))}
+          onClick={() => {
+            test()
+            dispatch(incrementAsync(incrementValue))
+          }}
         >
           Add Async
         </button>

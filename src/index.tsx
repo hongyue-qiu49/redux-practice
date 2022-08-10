@@ -6,14 +6,26 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import './index.css';
 
+import {QueryClient, QueryClientProvider} from 'react-query'
+
+const queryClient = new QueryClient({
+    defaultOptions: {
+        queries: {
+            retryDelay: attemptIndex => Math.min(1000 * 2 ** attemptIndex, 30000),
+        },
+    },
+})
+
 const container = document.getElementById('root')!;
 const root = createRoot(container);
 
 root.render(
   <React.StrictMode>
-    <Provider store={store}>
-      <App />
-    </Provider>
+    <QueryClientProvider client={queryClient}>
+      <Provider store={store}>
+        <App />
+      </Provider>
+    </QueryClientProvider>
   </React.StrictMode>
 );
 

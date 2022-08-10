@@ -38,6 +38,13 @@ export const counterSlice = createSlice({
       // immutable state based off those changes
       state.value += 1;
     },
+    incrementUseReactQuery: (state,action: PayloadAction<number>) => {
+      // temp
+      return {
+        ...state,
+        value: action.payload
+      }
+    },
     decrement: (state) => {
       state.value -= 1;
     },
@@ -63,7 +70,7 @@ export const counterSlice = createSlice({
   },
 });
 
-export const { increment, decrement, incrementByAmount } = counterSlice.actions;
+export const { increment, incrementUseReactQuery, decrement, incrementByAmount } = counterSlice.actions;
 
 // The function below is called a selector and allows us to select a value from
 // the state. Selectors can also be defined inline where they're used instead of
