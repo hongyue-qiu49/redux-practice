@@ -1,16 +1,24 @@
-import React, { ChangeEvent } from "react";
+import React, { ChangeEvent, useEffect } from "react";
 import "./todoPanel.css"
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
-import { selectTodos, markEvent, selectPriority, filterByCompletion, filterByPriority } from "../../reducer/todoSlice";
+import {
+    selectTodos,
+    init,
+    markEvent,
+    selectPriority,
+    filterByCompletion,
+    filterByPriority,
+} from "../../reducer/todoSlice";
 import TodoItem from "./todoItem/todoItem";
 import TodoControlItem from "./todoControlItem/todoControlItem";
 import { filterCompletionOptions, filterPriorityOptions, FilterTodoEnum } from "../../constant/todo";
+import { useQuery } from "react-query";
+import { fetchTodos } from "../../features/counter/counterAPI";
 
 const TodoPanel = () => {
-
     const dispatch = useAppDispatch()
-
-    const todos = useAppSelector(selectTodos)
+    const todos = useQuery("todos",fetchTodos,{enabled: true})
+    const currentTodos = useAppSelector(selectTodos)
     const handleTodoItemCheckboxClicked = (index: number) => {
         dispatch(markEvent(index))
     }
@@ -27,11 +35,17 @@ const TodoPanel = () => {
         dispatch(filterByPriority(type))
     }
 
+    useEffect(()=> {
+        if (todos.isSuccess) {
+            dispatch(init(todos.data))
+        }
+    },[todos.isSuccess])
+
     return <div className="todo-panel">
         <section className="todo-list">
             <h3>todo list</h3>
             <div className="todo-list-content" >
-                {todos.map((item,index) =>
+                {currentTodos.map((item,index) =>
                     <TodoItem
                         key={index}
                         index={index}

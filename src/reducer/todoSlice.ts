@@ -69,11 +69,30 @@ export const initialState: TodosState = {
   filterByPriority: "all",
 }
 
+export const initEmptyState: TodosState = {
+  todos: [
+    {
+      index: 1,
+      text: '',
+      completed: true,
+      priority: "normal",
+    },
+  ],
+  filterByCompletion: "all",
+  filterByPriority: "all",
+}
+
 export const todoSlice = createSlice({
   name: 'todo',
-  initialState,
+  initialState: initEmptyState,
   // The `reducers` field lets us define reducers and generate associated actions
   reducers: {
+    init: (state, action: PayloadAction<Todo[]>) => {
+      return {
+        ...state,
+        todos: [...action.payload]
+      }
+    },
     markEvent: (state, action: PayloadAction<number>) => {
       const todos = state.todos.map(i => i.index === action.payload? {
             ...i,
@@ -100,7 +119,7 @@ export const todoSlice = createSlice({
   },
 });
 
-export const { markEvent, selectPriority, filterByCompletion, filterByPriority } = todoSlice.actions;
+export const { init, markEvent, selectPriority, filterByCompletion, filterByPriority } = todoSlice.actions;
 
 
 export const selectTodos = (state: RootState) => {

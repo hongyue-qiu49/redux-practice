@@ -13,7 +13,7 @@ function App() {
 
   return (
     <div className="App">
-      {!!isFetching && <div>full screen loading</div>}
+      {!!isFetching && <div className="fullScreenLoading">full screen loading</div>}
       {!showReduxDemo && !isFetching && <Home onReduxDemoClick={handleReduxLinkClick}/>}
       {showReduxDemo && !isFetching && <TodoPanel/>}
     </div>

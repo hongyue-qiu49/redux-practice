@@ -6,11 +6,13 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import './index.css';
 
-import {QueryClient, QueryClientProvider} from 'react-query'
+import { QueryClient, QueryClientProvider } from 'react-query'
 
 const queryClient = new QueryClient({
     defaultOptions: {
         queries: {
+            refetchOnWindowFocus: false,
+            refetchOnMount: false,
             retryDelay: attemptIndex => Math.min(1000 * 2 ** attemptIndex, 30000),
         },
     },

@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-
 import { useAppSelector, useAppDispatch } from '../../app/hooks';
 import {
   decrement,
@@ -11,9 +10,8 @@ import {
   selectCount,
 } from './counterSlice';
 import styles from './Counter.module.css';
-import {useQuery} from "react-query";
-import {fetchCount} from "./counterAPI";
-import {log} from "util";
+import { useQuery } from "react-query";
+import { fetchCount } from "./counterAPI";
 
 export function Counter() {
   const count = useAppSelector(selectCount);
@@ -28,10 +26,8 @@ export function Counter() {
   })
 
   const test = async () => {
-    console.log("result1111111:", result)
     setIsEnable(true)
     await result.refetch()
-    console.log("result2222222:", result)
   }
 
   return (

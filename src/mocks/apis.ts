@@ -5,7 +5,7 @@ export const handlers = [
     rest.get('/todos', (req, res, ctx) => {
         return res(
             ctx.status(200),
-            ctx.json(initialState),
+            ctx.json(initialState.todos),
         )
     })
 ]
