@@ -4,14 +4,13 @@ import {
   decrement,
   increment,
   incrementByAmount,
-  incrementUseReactQuery,
   incrementAsync,
   incrementIfOdd,
   selectCount,
-} from './counterSlice';
+} from '../../reducer/counterSlice';
 import styles from './Counter.module.css';
 import { useQuery } from "react-query";
-import { fetchCount } from "./counterAPI";
+import { fetchCount } from "../../api/counterAPI";
 
 export function Counter() {
   const count = useAppSelector(selectCount);

@@ -13,11 +13,11 @@ import TodoItem from "./todoItem/todoItem";
 import TodoControlItem from "./todoControlItem/todoControlItem";
 import { filterCompletionOptions, filterPriorityOptions, FilterTodoEnum } from "../../constant/todo";
 import { useQuery } from "react-query";
-import { fetchTodos } from "../../features/counter/counterAPI";
+import { fetchTodos } from "../../api/todoAPI";
 
 const TodoPanel = () => {
     const dispatch = useAppDispatch()
-    const todos = useQuery("todos",fetchTodos,{enabled: true})
+    const todos = useQuery("todos", fetchTodos)
     const currentTodos = useAppSelector(selectTodos)
     const handleTodoItemCheckboxClicked = (index: number) => {
         dispatch(markEvent(index))
