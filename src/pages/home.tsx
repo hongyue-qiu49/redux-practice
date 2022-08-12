@@ -4,9 +4,10 @@ import '../App.css';
 
 interface HomeProps {
   onReduxDemoClick: () => void
+  onReactQueryDemoClick: () => void
 }
 const Home = (
-    {onReduxDemoClick}:HomeProps
+    {onReduxDemoClick, onReactQueryDemoClick}:HomeProps
 ) => {
   return (
     <div className="App">
@@ -54,6 +55,8 @@ const Home = (
           </a>
           ,
           <a className="App-link" href="#" onClick={onReduxDemoClick}>redux demo</a>
+          ,
+          <a className="App-link" href="#" onClick={onReactQueryDemoClick}>react query demo</a>
         </span>
       </header>
     </div>

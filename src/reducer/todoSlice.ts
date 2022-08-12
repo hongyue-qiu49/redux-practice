@@ -8,7 +8,7 @@ export interface TodosState {
   filterByPriority: string,
 }
 
-type Todo = {
+export type Todo = {
   index?: number,
   text: string,
   completed: boolean,
