@@ -14,21 +14,30 @@ const TodoControlCommon = ({ handlePagingSelect, isPaging}: TodoControlCommonPro
             <button className="todo-control-button">add todo</button>
             <button className="todo-control-button">delete completed</button>
         </div>
-        <div className="todo-control-buttons">
+        <div>
+            <div className="todo-control-buttons">
+                <span
+                    className={classNames("todo-control-button-slice",
+                        !isPaging && "todo-control-button-slice-selected")}
+                    onClick={() => handlePagingSelect(false)}
+                >
+                    all
+                </span>
                     <span
                         className={classNames("todo-control-button-slice",
-                            !isPaging && "todo-control-button-slice-selected")}
-                        onClick={() => handlePagingSelect(false)}
+                            isPaging && "todo-control-button-slice-selected")}
+                        onClick={() => handlePagingSelect(true)}
                     >
-                        all
-                    </span>
-            <span
-                className={classNames("todo-control-button-slice",
-                    isPaging && "todo-control-button-slice-selected")}
-                onClick={() => handlePagingSelect(true)}
-            >
-                        paging
-                    </span>
+                    paging
+                </span>
+            </div>
+            {isPaging &&
+                <div className="todo-control-page-buttons">
+                    <button className="todo-control-page-button">-</button>
+                    1
+                    <button className="todo-control-page-button">+</button>
+                </div>
+            }
         </div>
     </div>
 }

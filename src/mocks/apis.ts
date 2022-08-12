@@ -1,5 +1,5 @@
 import { rest } from "msw";
-import {initialState} from "../reducer/todoSlice";
+import { initialState } from "../constant/todo";
 
 export const handlers = [
     rest.get('/todos', (req, res, ctx) => {
