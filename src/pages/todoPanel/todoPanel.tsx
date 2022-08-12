@@ -13,8 +13,8 @@ import TodoItem from "./todoItem/todoItem";
 import TodoControlItem from "./todoControlItem/todoControlItem";
 import { filterCompletionOptions, filterPriorityOptions, FilterTodoEnum } from "../../constant/todo";
 import { useQuery } from "react-query";
-import {fetchPageData, fetchTodos} from "../../api/todoAPI";
-import classNames from "classnames";
+import { fetchTodos } from "../../api/todoAPI";
+import TodoControlCommon from "./todoControlCommon/todoControlCommon";
 
 const TodoPanel = () => {
     const [isPaging, setIsPaging] = useState(false)
@@ -67,28 +67,10 @@ const TodoPanel = () => {
 
         </section>
         <section className="todo-control">
-            <div className="todo-control-common">
-                <div>
-                    <button className="todo-control-button">add todo</button>
-                    <button className="todo-control-button">delete completed</button>
-                </div>
-                <div className="todo-control-buttons">
-                    <span
-                        className={classNames("todo-control-button-slice",
-                                !isPaging && "todo-control-button-slice-selected")}
-                        onClick={() => handlePagingSelect(false)}
-                    >
-                        all
-                    </span>
-                    <span
-                        className={classNames("todo-control-button-slice",
-                            isPaging && "todo-control-button-slice-selected")}
-                        onClick={() => handlePagingSelect(true)}
-                    >
-                        paging
-                    </span>
-                </div>
-            </div>
+            <TodoControlCommon
+                handlePagingSelect={handlePagingSelect}
+                isPaging={isPaging}
+            />
             <div className="todo-control-options">
                 <TodoControlItem
                     title="filter by completion: "
