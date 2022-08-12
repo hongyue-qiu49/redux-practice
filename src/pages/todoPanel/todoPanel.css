@@ -37,7 +37,11 @@
     justify-content: space-between;
 }
 
-.todo-control button {
+.todo-control-common {
+    display: flex;
+}
+
+.todo-control-button {
     background-color: plum;
     opacity: 0.8;
     border: #fff5f8;
@@ -47,6 +51,16 @@
     display: block;
     margin-bottom: 12px;
 }
+.todo-control-buttons {
+    height: 33px;
+    width: 200px;
+    border: 1px solid plum;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: bold;
+    margin-left: 24px;
+    cursor: pointer;
+}
 
 .todo-control button:nth-child(even) {
     background-color: #f5e2f5;
@@ -55,6 +69,32 @@
 .todo-control button:hover,button:nth-child(even):hover {
     background-color: #a040a0;
     color: white;
+}
+
+.todo-control-button-slice {
+    display: inline-block;
+    height: 35px;
+    line-height: 35px;
+    width: 50%;
+}
+
+.todo-control-button-slice:hover {
+    background-color: #a040a0;
+    color: white;
+}
+
+.todo-control-button-slice-selected:hover {
+    background-color: plum;
+    color: white;
+}
+
+.todo-control-button-slice-selected {
+    /*border: 1px solid #ddd4dd;*/
+    /*background-color:#ddd4dd;*/
+    background-color: #a040a0;
+    color: white;
+    opacity: 0.6;
+    border-radius: 4px;
 }
 
 .todo-control-options {

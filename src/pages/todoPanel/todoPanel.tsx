@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useEffect } from "react";
+import React, {ChangeEvent, useEffect, useState} from "react";
 import "./todoPanel.css"
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import {
@@ -13,18 +13,25 @@ import TodoItem from "./todoItem/todoItem";
 import TodoControlItem from "./todoControlItem/todoControlItem";
 import { filterCompletionOptions, filterPriorityOptions, FilterTodoEnum } from "../../constant/todo";
 import { useQuery } from "react-query";
-import { fetchTodos } from "../../api/todoAPI";
+import {fetchPageData, fetchTodos} from "../../api/todoAPI";
+import classNames from "classnames";
 
 const TodoPanel = () => {
+    const [isPaging, setIsPaging] = useState(false)
     const dispatch = useAppDispatch()
     const todos = useQuery("todos", fetchTodos)
     const currentTodos = useAppSelector(selectTodos)
+
     const handleTodoItemCheckboxClicked = (index: number) => {
         dispatch(markEvent(index))
     }
 
-    const handleTodoItemPrioritySelected = (e: ChangeEvent<HTMLSelectElement>,index: number) => {
+    const handleTodoItemPrioritySelected = (e: ChangeEvent<HTMLSelectElement>, index: number) => {
         dispatch(selectPriority({index, value: e.target.value}))
+    }
+
+    const handlePagingSelect = (isPagingSelect: boolean) => {
+        setIsPaging(isPagingSelect)
     }
 
     const handleCompletionOptionClick = (type: FilterTodoEnum) => {
@@ -35,17 +42,17 @@ const TodoPanel = () => {
         dispatch(filterByPriority(type))
     }
 
-    useEffect(()=> {
+    useEffect(() => {
         if (todos.isSuccess) {
             dispatch(init(todos.data))
         }
-    },[todos.isSuccess])
+    }, [todos.isSuccess])
 
     return <div className="todo-panel">
         <section className="todo-list">
             <h3>todo list</h3>
-            <div className="todo-list-content" >
-                {currentTodos.map((item,index) =>
+            <div className="todo-list-content">
+                {currentTodos.map((item, index) =>
                     <TodoItem
                         key={index}
                         index={index}
@@ -60,9 +67,27 @@ const TodoPanel = () => {
 
         </section>
         <section className="todo-control">
-            <div>
-                <button>add todo</button>
-                <button>delete completed</button>
+            <div className="todo-control-common">
+                <div>
+                    <button className="todo-control-button">add todo</button>
+                    <button className="todo-control-button">delete completed</button>
+                </div>
+                <div className="todo-control-buttons">
+                    <span
+                        className={classNames("todo-control-button-slice",
+                                !isPaging && "todo-control-button-slice-selected")}
+                        onClick={() => handlePagingSelect(false)}
+                    >
+                        all
+                    </span>
+                    <span
+                        className={classNames("todo-control-button-slice",
+                            isPaging && "todo-control-button-slice-selected")}
+                        onClick={() => handlePagingSelect(true)}
+                    >
+                        paging
+                    </span>
+                </div>
             </div>
             <div className="todo-control-options">
                 <TodoControlItem
