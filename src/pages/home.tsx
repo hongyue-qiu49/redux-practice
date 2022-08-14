@@ -1,13 +1,13 @@
-import React from 'react';
-import { Counter } from '../features/counter/Counter';
-import '../App.css';
+import React from 'react'
+import { Counter } from '../features/counter/Counter'
+import '../App.css'
 
 interface HomeProps {
   onReduxDemoClick: () => void
   onReactQueryDemoClick: () => void
 }
 const Home = (
-    {onReduxDemoClick, onReactQueryDemoClick}:HomeProps
+  { onReduxDemoClick, onReactQueryDemoClick }: HomeProps
 ) => {
   return (
     <div className="App">
@@ -60,7 +60,7 @@ const Home = (
         </span>
       </header>
     </div>
-  );
+  )
 }
 
-export default Home;
+export default Home

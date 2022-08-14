@@ -1,54 +1,54 @@
-import React, {ChangeEvent, useEffect, useState} from "react";
-import "./todoPanel.css"
-import { useAppDispatch, useAppSelector } from "../../app/hooks";
+import React, { ChangeEvent, useEffect, useState } from 'react'
+import './todoPanel.css'
+import { useAppDispatch, useAppSelector } from '../../app/hooks'
 import {
-    selectTodos,
-    init,
-    markEvent,
-    selectPriority,
-    filterByCompletion,
-    filterByPriority,
-} from "../../reducer/todoSlice";
-import TodoItem from "./todoItem/todoItem";
-import TodoControlItem from "./todoControlItem/todoControlItem";
-import { filterCompletionOptions, filterPriorityOptions, FilterTodoEnum } from "../../constant/todo";
-import { useQuery } from "react-query";
-import { fetchTodos } from "../../api/todoAPI";
-import TodoControlCommon from "./todoControlCommon/todoControlCommon";
+  selectTodos,
+  init,
+  markEvent,
+  selectPriority,
+  filterByCompletion,
+  filterByPriority
+} from '../../reducer/todoSlice'
+import TodoItem from './todoItem/todoItem'
+import TodoControlItem from './todoControlItem/todoControlItem'
+import { filterCompletionOptions, filterPriorityOptions, FilterTodoEnum } from '../../constant/todo'
+import { useQuery } from 'react-query'
+import { fetchTodos } from '../../api/todoAPI'
+import TodoControlCommon from './todoControlCommon/todoControlCommon'
 
 const TodoPanel = () => {
-    const [isPaging, setIsPaging] = useState(false)
-    const dispatch = useAppDispatch()
-    const todos = useQuery("todos", () => fetchTodos(0))
-    const currentTodos = useAppSelector(selectTodos)
+  const [isPaging, setIsPaging] = useState(false)
+  const dispatch = useAppDispatch()
+  const todos = useQuery('todos', async () => await fetchTodos(0))
+  const currentTodos = useAppSelector(selectTodos)
 
-    const handleTodoItemCheckboxClicked = (index: number) => {
-        dispatch(markEvent(index))
+  const handleTodoItemCheckboxClicked = (index: number) => {
+    dispatch(markEvent(index))
+  }
+
+  const handleTodoItemPrioritySelected = (e: ChangeEvent<HTMLSelectElement>, index: number) => {
+    dispatch(selectPriority({ index, value: e.target.value }))
+  }
+
+  const handlePagingSelect = (isPagingSelect: boolean) => {
+    setIsPaging(isPagingSelect)
+  }
+
+  const handleCompletionOptionClick = (type: FilterTodoEnum) => {
+    dispatch(filterByCompletion(type))
+  }
+
+  const handlePriorityOptionClick = (type: FilterTodoEnum) => {
+    dispatch(filterByPriority(type))
+  }
+
+  useEffect(() => {
+    if (todos.isSuccess) {
+      dispatch(init(todos.data))
     }
+  }, [todos.isSuccess])
 
-    const handleTodoItemPrioritySelected = (e: ChangeEvent<HTMLSelectElement>, index: number) => {
-        dispatch(selectPriority({index, value: e.target.value}))
-    }
-
-    const handlePagingSelect = (isPagingSelect: boolean) => {
-        setIsPaging(isPagingSelect)
-    }
-
-    const handleCompletionOptionClick = (type: FilterTodoEnum) => {
-        dispatch(filterByCompletion(type))
-    }
-
-    const handlePriorityOptionClick = (type: FilterTodoEnum) => {
-        dispatch(filterByPriority(type))
-    }
-
-    useEffect(() => {
-        if (todos.isSuccess) {
-            dispatch(init(todos.data))
-        }
-    }, [todos.isSuccess])
-
-    return <div className="todo-panel">
+  return <div className="todo-panel">
         <section className="todo-list">
             <h3>todo list</h3>
             <div className="todo-list-content">

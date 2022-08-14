@@ -1,11 +1,11 @@
-import React, {useState} from 'react';
-import './App.css';
-import Home from "./pages/home";
-import TodoPanel from "./pages/todoPanel/todoPanel";
-import {useIsFetching} from "react-query";
-import TodoPanelQuery from "./pages/todoPanelQuery/todoPanelQuery";
+import React, { useState } from 'react'
+import './App.css'
+import Home from './pages/home'
+import TodoPanel from './pages/todoPanel/todoPanel'
+import { useIsFetching } from 'react-query'
+import TodoPanelQuery from './pages/todoPanelQuery/todoPanelQuery'
 
-function App() {
+function App () {
   const [showReduxDemo, setShowReduxDemo] = useState(false)
   const [showReactQueryDemo, setShowReactQueryDemo] = useState(false)
   const isFetching = useIsFetching()
@@ -28,7 +28,7 @@ function App() {
       {showReduxDemo && !isFetching && <TodoPanel/>}
       {showReactQueryDemo && !isFetching && <TodoPanelQuery/>}
     </div>
-  );
+  )
 }
 
-export default App;
+export default App

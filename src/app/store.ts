@@ -1,19 +1,20 @@
-import { configureStore, ThunkAction, Action } from '@reduxjs/toolkit';
-import counterReducer from '../reducer/counterSlice';
-import todoReducer from '../reducer/todoSlice';
+import { configureStore, ThunkAction, Action } from '@reduxjs/toolkit'
+import counterReducer from '../reducer/counterSlice'
+import todoReducer from '../reducer/todoSlice'
 
 export const store = configureStore({
   reducer: {
     counter: counterReducer,
-    todo: todoReducer,
+    todo: todoReducer
   }
-});
+})
 
-export type AppDispatch = typeof store.dispatch;
-export type RootState = ReturnType<typeof store.getState>;
+export type AppDispatch = typeof store.dispatch
+export type RootState = ReturnType<typeof store.getState>
+// eslint-disable-next-line @typescript-eslint/no-invalid-void-type
 export type AppThunk<ReturnType = void> = ThunkAction<
-  ReturnType,
-  RootState,
-  unknown,
-  Action<string>
->;
+ReturnType,
+RootState,
+unknown,
+Action<string>
+>

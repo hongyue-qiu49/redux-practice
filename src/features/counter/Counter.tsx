@@ -1,29 +1,30 @@
-import React, { useState } from 'react';
-import { useAppSelector, useAppDispatch } from '../../app/hooks';
+import React, { useState } from 'react'
+import { useAppSelector, useAppDispatch } from '../../app/hooks'
 import {
   decrement,
   increment,
   incrementByAmount,
   incrementAsync,
   incrementIfOdd,
-  selectCount,
-} from '../../reducer/counterSlice';
-import styles from './Counter.module.css';
-import { useQuery } from "react-query";
-import { fetchCount } from "../../api/counterAPI";
+  selectCount
+} from '../../reducer/counterSlice'
+import styles from './Counter.module.css'
+import { useQuery } from 'react-query'
+import { fetchCount } from '../../api/counterAPI'
 
-export function Counter() {
-  const count = useAppSelector(selectCount);
-  const dispatch = useAppDispatch();
-  const [incrementAmount, setIncrementAmount] = useState('2');
-  const [isEnable, setIsEnable] = useState(false);
+export function Counter () {
+  const count = useAppSelector(selectCount)
+  const dispatch = useAppDispatch()
+  const [incrementAmount, setIncrementAmount] = useState('2')
+  const [isEnable, setIsEnable] = useState(false)
 
-  const incrementValue = Number(incrementAmount) || 0;
-  const result = useQuery("increment",() => fetchCount(incrementValue),{
+  const incrementValue = Number(incrementAmount) || 0
+  const result = useQuery('increment', async () => await fetchCount(incrementValue), {
     // The query will not execute until the userId exists
-    enabled: isEnable,
+    enabled: isEnable
   })
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const test = async () => {
     setIsEnable(true)
     await result.refetch()
@@ -39,7 +40,7 @@ export function Counter() {
         >
           -
         </button>
-        {result.isLoading ?<span className={styles.value}>loading...</span>:<span className={styles.value}>{count}</span>}
+        {result.isLoading ? <span className={styles.value}>loading...</span> : <span className={styles.value}>{count}</span>}
         <button
           className={styles.button}
           aria-label="Increment value"
@@ -64,8 +65,7 @@ export function Counter() {
         <button
           className={styles.asyncButton}
           onClick={() => {
-            test()
-            dispatch(incrementAsync(incrementValue))
+            void dispatch(incrementAsync(incrementValue))
           }}
         >
           Add Async
@@ -78,5 +78,5 @@ export function Counter() {
         </button>
       </div>
     </div>
-  );
+  )
 }
