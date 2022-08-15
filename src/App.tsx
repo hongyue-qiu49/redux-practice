@@ -19,14 +19,14 @@ function App () {
 
   return (
     <div className="App">
-      {!!isFetching && <div className="fullScreenLoading">full screen loading</div>}
-      {!showReduxDemo && !showReactQueryDemo && !isFetching &&
+       {!!isFetching && <div className="fullScreenLoading">full screen loading</div>}
+      {!showReduxDemo && !showReactQueryDemo &&
         <Home
           onReduxDemoClick={handleReduxLinkClick}
           onReactQueryDemoClick={handleReactQueryLinkClick}
         />}
-      {showReduxDemo && !isFetching && <TodoPanel/>}
-      {showReactQueryDemo && !isFetching && <TodoPanelQuery/>}
+      {showReduxDemo && <TodoPanel/>}
+      {showReactQueryDemo && <TodoPanelQuery/>}
     </div>
   )
 }

@@ -19,7 +19,7 @@ import TodoControlCommon from './todoControlCommon/todoControlCommon'
 const TodoPanel = () => {
   const [isPaging, setIsPaging] = useState(false)
   const dispatch = useAppDispatch()
-  const todos = useQuery('todos', async () => await fetchTodos(0))
+  const todos = useQuery('todos111', async () => await fetchTodos(0))
   const currentTodos = useAppSelector(selectTodos)
 
   const handleTodoItemCheckboxClicked = (index: number) => {
@@ -30,8 +30,12 @@ const TodoPanel = () => {
     dispatch(selectPriority({ index, value: e.target.value }))
   }
 
-  const handlePagingSelect = (isPagingSelect: boolean) => {
-    setIsPaging(isPagingSelect)
+  const handlePagingSelect = () => {
+    setIsPaging(true)
+  }
+
+  const handleAllSelect = () => {
+    setIsPaging(false)
   }
 
   const handleCompletionOptionClick = (type: FilterTodoEnum) => {
@@ -69,6 +73,7 @@ const TodoPanel = () => {
         <section className="todo-control">
             <TodoControlCommon
                 handlePagingSelect={handlePagingSelect}
+                handleAllSelect={handleAllSelect}
                 isPaging={isPaging}
             />
             <div className="todo-control-options">

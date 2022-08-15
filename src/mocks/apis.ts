@@ -13,7 +13,8 @@ export const handlers = [
 
     return res(
       ctx.status(200),
-      ctx.json(result)
+      ctx.json(result),
+      ctx.delay(500)
     )
   })
 ]

@@ -12,8 +12,19 @@ const TodoPanelQuery = () => {
   const [isPaging, setIsPaging] = useState(false)
   const [filterByCompletionType, setFilterByCompletionType] = useState(FilterTodoEnum.All)
   const [filterByPriorityType, setFilterByPriorityType] = useState(FilterTodoEnum.All)
-  const todos = useQuery('todos', async () => await fetchTodos(0))
+  const [currentPageIndex, setCurrentPageIndex] = useState(0)
   const [currentTodos, setCurrentTodos] = useState<Todo[]>()
+
+  const todos = useQuery(
+    ['todos', currentPageIndex],
+    async () => await fetchTodos(currentPageIndex),
+    {
+      keepPreviousData: true
+    }
+  )
+
+  console.log('>>>>>>>>>>todos.isPreviousData', todos.isPreviousData)
+  console.log('>>>>>>>>>>todos.data.hasMore', todos.data.hasMore)
 
   const handleTodoItemCheckboxClicked = (index: number) => {
     //    todo: post to change check
@@ -23,8 +34,15 @@ const TodoPanelQuery = () => {
     //    todo: post to change select
   }
 
-  const handlePagingSelect = (isPagingSelect: boolean) => {
-    setIsPaging(isPagingSelect)
+  const handlePagingSelect = () => {
+    setIsPaging(true)
+    setCurrentPageIndex(1)
+    setFilterByCompletionType(FilterTodoEnum.All)
+  }
+
+  const handleAllSelect = () => {
+    setIsPaging(false)
+    setCurrentPageIndex(0)
   }
 
   const handleCompletionOptionClick = (type: FilterTodoEnum) => {
@@ -52,7 +70,7 @@ const TodoPanelQuery = () => {
         todo.priority === filterByPriorityType || filterByPriorityType === 'all')
       setCurrentTodos(tempTodos)
     }
-  }, [todos.isSuccess, filterByCompletionType, filterByPriorityType])
+  }, [todos.data, filterByCompletionType, filterByPriorityType])
 
   return <div className="todo-panel">
         <section className="todo-list">
@@ -75,6 +93,7 @@ const TodoPanelQuery = () => {
         <section className="todo-control">
             <TodoControlCommon
                 handlePagingSelect={handlePagingSelect}
+                handleAllSelect={handleAllSelect}
                 isPaging={isPaging}
             />
             <div className="todo-control-options">
