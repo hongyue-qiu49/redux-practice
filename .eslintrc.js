@@ -9,7 +9,7 @@ module.exports = {
   ],
   overrides: [
     {
-      files: ['*.ts','*.tsx'],
+      files: ['*.ts', '*.tsx'],
       rules: {
         '@typescript-eslint/restrict-plus-operands': 0,
         '@typescript-eslint/strict-boolean-expressions': 0,
@@ -28,7 +28,7 @@ module.exports = {
     },
     project: ['./tsconfig.json']
   },
-  parser: '@typescript-eslint/parser',
+  parser: '',
   plugins: [
     'react'
   ],
