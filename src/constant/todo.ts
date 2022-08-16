@@ -63,6 +63,48 @@ export const initialState: TodosState = {
       text: 'Walk around',
       completed: false,
       priority: 'normal'
+    },
+    {
+      index: 8,
+      text: 'Eat fruit',
+      completed: true,
+      priority: 'normal'
+    },
+    {
+      index: 9,
+      text: 'Swimming',
+      completed: false,
+      priority: 'important'
+    },
+    {
+      index: 10,
+      text: 'Stay at home',
+      completed: true,
+      priority: 'important'
+    },
+    {
+      index: 11,
+      text: 'Go to office in Monday morning',
+      completed: true,
+      priority: 'important'
+    },
+    {
+      index: 12,
+      text: 'Cut hair',
+      completed: false,
+      priority: 'normal'
+    },
+    {
+      index: 13,
+      text: 'travel',
+      completed: false,
+      priority: 'important'
+    },
+    {
+      index: 14,
+      text: 'wash closes',
+      completed: true,
+      priority: 'normal'
     }
   ],
   filterByCompletion: 'all',

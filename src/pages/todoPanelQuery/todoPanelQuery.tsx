@@ -4,8 +4,8 @@ import { Todo } from '../../reducer/todoSlice'
 import TodoItem from '../todoPanel/todoItem/todoItem'
 import TodoControlItem from '../todoPanel/todoControlItem/todoControlItem'
 import { filterCompletionOptions, filterPriorityOptions, FilterTodoEnum } from '../../constant/todo'
-import { useQuery } from 'react-query'
-import { fetchTodos } from '../../api/todoAPI'
+import { useInfiniteQuery, useQuery } from 'react-query'
+import { fetchInfiniteTodos, fetchTodos } from '../../api/todoAPI'
 import TodoControlCommon from '../todoPanel/todoControlCommon/todoControlCommon'
 
 const TodoPanelQuery = () => {
@@ -15,16 +15,22 @@ const TodoPanelQuery = () => {
   const [currentPageIndex, setCurrentPageIndex] = useState(0)
   const [currentTodos, setCurrentTodos] = useState<Todo[]>()
 
-  const todos = useQuery(
+  const todos = useInfiniteQuery(
+    ['todos', currentPageIndex],
+    fetchInfiniteTodos,
+    {
+      getNextPageParam: (lastPage, pages) => lastPage.nextCursor,
+      getPreviousPageParam: (firstPage, pages) => firstPage.prevCursor
+    }
+  )
+
+  const pagingTodos = useQuery(
     ['todos', currentPageIndex],
     async () => await fetchTodos(currentPageIndex),
     {
       keepPreviousData: true
     }
   )
-
-  console.log('>>>>>>>>>>todos.isPreviousData', todos.isPreviousData)
-  console.log('>>>>>>>>>>todos.data.hasMore', todos.data.hasMore)
 
   const handleTodoItemCheckboxClicked = (index: number) => {
     //    todo: post to change check
@@ -42,7 +48,6 @@ const TodoPanelQuery = () => {
 
   const handleAllSelect = () => {
     setIsPaging(false)
-    setCurrentPageIndex(0)
   }
 
   const handleCompletionOptionClick = (type: FilterTodoEnum) => {
@@ -53,24 +58,39 @@ const TodoPanelQuery = () => {
     setFilterByPriorityType(type)
   }
 
-  useEffect(() => {
-    if (todos.isSuccess) {
-      let tempTodos = todos.data
-      if (filterByCompletionType !== FilterTodoEnum.All) {
-        tempTodos = tempTodos.filter((todo: { completed: boolean }) => {
-          if (filterByCompletionType === FilterTodoEnum.Complete) {
-            return todo.completed
-          } else {
-            return !todo.completed
-          }
-        })
-      }
+  const getTodosFromGroup = (tempTodos: Array<{ data: any }>) => {
+    const tempTodosGroup = tempTodos?.map((item: { data: any }) => item.data)
+    return [].concat(...tempTodosGroup)
+  }
 
-      tempTodos = tempTodos.filter((todo: { priority: FilterTodoEnum }) =>
-        todo.priority === filterByPriorityType || filterByPriorityType === 'all')
-      setCurrentTodos(tempTodos)
+  const filterTodoItems = (Todos: Todo[]) => {
+    const test = Todos?.filter((todo: { completed: boolean }) => {
+      if (filterByCompletionType === FilterTodoEnum.Complete) {
+        return todo.completed
+      } else {
+        return !todo.completed
+      }
+    })
+    return test?.filter((todo: Todo) =>
+      todo.priority === filterByPriorityType || filterByPriorityType === 'all')
+  }
+
+  useEffect(() => {
+    let tempTodos
+
+    if (isPaging && pagingTodos.isSuccess) {
+      tempTodos = getTodosFromGroup(pagingTodos.data.pages)
     }
-  }, [todos.data, filterByCompletionType, filterByPriorityType])
+    if (!isPaging && todos.isSuccess) {
+      tempTodos = getTodosFromGroup(todos.data.pages)
+    }
+
+    if (filterByCompletionType !== FilterTodoEnum.All && tempTodos && tempTodos.length > 0) {
+      tempTodos = filterTodoItems(tempTodos)
+    }
+
+    setCurrentTodos(tempTodos)
+  }, [todos.data, pagingTodos.data, filterByCompletionType, filterByPriorityType])
 
   return <div className="todo-panel">
         <section className="todo-list">
@@ -87,8 +107,9 @@ const TodoPanelQuery = () => {
                         priority={item.priority}
                     />
                 )}
+                {/* eslint-disable-next-line @typescript-eslint/no-misused-promises */}
+                {!isPaging && todos.hasNextPage && <div onClick={async () => await todos.fetchNextPage()}>load more...</div>}
             </div>
-
         </section>
         <section className="todo-control">
             <TodoControlCommon
