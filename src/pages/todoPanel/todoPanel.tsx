@@ -19,7 +19,7 @@ import TodoControlCommon from './todoControlCommon/todoControlCommon'
 const TodoPanel = () => {
   const [isPaging, setIsPaging] = useState(false)
   const dispatch = useAppDispatch()
-  const todos = useQuery('todos111', async () => await fetchTodos(0))
+  const todos = useQuery('todos111', async ({ signal }) => await fetchTodos(0, signal))
   const currentTodos = useAppSelector(selectTodos)
 
   const handleTodoItemCheckboxClicked = (index: number) => {

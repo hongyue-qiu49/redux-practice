@@ -4,9 +4,10 @@ interface Params {
   pageParam?: number
 }
 
-export const fetchTodos = async (page?: number): Promise<any> => {
+export const fetchTodos = async (page?: number, signal?: AbortSignal): Promise<any> => {
   const response = await axios({
     method: 'get',
+    signal,
     url: page ? '/todos?page=' + page : '/todos'
   })
 
