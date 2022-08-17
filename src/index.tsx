@@ -18,6 +18,14 @@ const queryClient = new QueryClient({
   }
 })
 
+/*
+* Manually removing first page:
+queryClient.setQueryData('projects', data => ({
+  pages: data.pages.slice(1),
+  pageParams: data.pageParams.slice(1)
+}))
+*/
+
 const container = document.getElementById('root')!
 const root = createRoot(container)
 
