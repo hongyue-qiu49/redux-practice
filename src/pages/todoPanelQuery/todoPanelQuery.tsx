@@ -85,7 +85,7 @@ const TodoPanelQuery = () => {
       tempTodos = getTodosFromGroup(todos.data.pages)
     }
 
-    if (filterByCompletionType !== FilterTodoEnum.All && tempTodos && tempTodos.length > 0) {
+    if (filterByPriorityType !== FilterTodoEnum.All && tempTodos && tempTodos.length > 0) {
       tempTodos = filterTodoItems(tempTodos)
     }
 
