@@ -5,7 +5,6 @@ import { store } from './app/store'
 import App from './App'
 import reportWebVitals from './reportWebVitals'
 import './index.css'
-
 import { QueryClient, QueryClientProvider } from 'react-query'
 
 const queryClient = new QueryClient({
