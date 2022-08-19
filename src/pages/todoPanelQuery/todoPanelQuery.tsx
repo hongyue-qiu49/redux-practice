@@ -4,8 +4,8 @@ import { Todo } from '../../reducer/todoSlice'
 import TodoItem from '../todoPanel/todoItem/todoItem'
 import TodoControlItem from '../todoPanel/todoControlItem/todoControlItem'
 import { filterCompletionOptions, filterPriorityOptions, FilterTodoEnum } from '../../constant/todo'
-import { useInfiniteQuery, useQuery } from 'react-query'
-import { fetchInfiniteTodos, fetchTodos } from '../../api/todoAPI'
+import { useInfiniteQuery, useMutation, useQuery } from 'react-query'
+import { changeTodoById, fetchInfiniteTodos, fetchTodos } from '../../api/todoAPI'
 import TodoControlCommon from '../todoPanel/todoControlCommon/todoControlCommon'
 
 const TodoPanelQuery = () => {
@@ -19,10 +19,13 @@ const TodoPanelQuery = () => {
     ['todos', currentPageIndex],
     fetchInfiniteTodos,
     {
+      // then seconds params is all pages, just demo show what it is
       getNextPageParam: (lastPage, pages) => lastPage.nextCursor,
       getPreviousPageParam: (firstPage, pages) => firstPage.prevCursor
     }
   )
+
+  const mutation = useMutation(changeTodoById)
 
   const pagingTodos = useQuery(
     ['todos', currentPageIndex],
@@ -33,11 +36,15 @@ const TodoPanelQuery = () => {
   )
 
   const handleTodoItemCheckboxClicked = (index: number) => {
-    //    todo: post to change check
+    void mutation.mutateAsync({ id: index, completedChange: true }).then(async _ => {
+      await todos.refetch()
+    })
   }
 
   const handleTodoItemPrioritySelected = (e: ChangeEvent<HTMLSelectElement>, index: number) => {
-    //    todo: post to change select
+    void mutation.mutateAsync({ id: index, priority: e.target.value }).then(async _ => {
+      await todos.refetch()
+    })
   }
 
   const handlePagingSelect = () => {
