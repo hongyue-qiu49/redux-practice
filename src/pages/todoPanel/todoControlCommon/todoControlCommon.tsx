@@ -9,6 +9,7 @@ interface TodoControlCommonProps {
   onPrePageClicked?: () => void
   pageIndex?: number
   isPaging: boolean
+  children?: React.ReactElement
 }
 
 const TodoControlCommon = ({
@@ -17,12 +18,14 @@ const TodoControlCommon = ({
   onNextPageClicked,
   onPrePageClicked,
   isPaging,
-  pageIndex = 1
+  pageIndex = 1,
+  children
 }: TodoControlCommonProps) => {
   return <div className="todo-control-common">
         <div>
             <button className="todo-control-button">add todo</button>
             <button className="todo-control-button">delete completed</button>
+            {children}
         </div>
         <div>
             <div className="todo-control-buttons">

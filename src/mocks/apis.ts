@@ -46,7 +46,7 @@ export const handlers = [
     return await res(
       ctx.status(200),
       ctx.json('success'),
-      ctx.delay(500)
+      ctx.delay(50)
     )
   })
 ]

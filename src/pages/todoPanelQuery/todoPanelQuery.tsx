@@ -4,9 +4,10 @@ import { Todo } from '../../reducer/todoSlice'
 import TodoItem from '../todoPanel/todoItem/todoItem'
 import TodoControlItem from '../todoPanel/todoControlItem/todoControlItem'
 import { filterCompletionOptions, filterPriorityOptions, FilterTodoEnum } from '../../constant/todo'
-import { useInfiniteQuery, useMutation, useQuery } from 'react-query'
+import { useInfiniteQuery, useMutation, useQuery, useQueryClient } from 'react-query'
 import { changeTodoById, fetchInfiniteTodos, fetchTodos } from '../../api/todoAPI'
 import TodoControlCommon from '../todoPanel/todoControlCommon/todoControlCommon'
+import { useTestHook } from '../../hooks/useTestHook'
 
 const TodoPanelQuery = () => {
   const [isPaging, setIsPaging] = useState(false)
@@ -14,6 +15,9 @@ const TodoPanelQuery = () => {
   const [filterByPriorityType, setFilterByPriorityType] = useState(FilterTodoEnum.All)
   const [currentPageIndex, setCurrentPageIndex] = useState(0)
   const [currentTodos, setCurrentTodos] = useState<Todo[]>()
+
+  const queryClient = useQueryClient()
+  const { cancelTest, removeTest, resetTest, invalidateTest } = useTestHook(useQueryClient())
 
   const todos = useInfiniteQuery(
     ['todos', currentPageIndex],
@@ -28,7 +32,7 @@ const TodoPanelQuery = () => {
   const mutation = useMutation(changeTodoById)
 
   const pagingTodos = useQuery(
-    ['todos', currentPageIndex],
+    ['pagingTodos', currentPageIndex],
     async () => await fetchTodos(currentPageIndex),
     {
       keepPreviousData: true
@@ -97,7 +101,7 @@ const TodoPanelQuery = () => {
     let tempTodos
 
     if (isPaging && pagingTodos.isSuccess) {
-      tempTodos = getTodosFromGroup(pagingTodos.data.pages)
+      tempTodos = pagingTodos.data
     }
     if (!isPaging && todos.isSuccess) {
       tempTodos = getTodosFromGroup(todos.data.pages)
@@ -106,6 +110,7 @@ const TodoPanelQuery = () => {
     if (tempTodos && tempTodos.length > 0) {
       tempTodos = filterTodoItems(tempTodos)
     }
+    console.log('todo data', queryClient.getQueryData('todos', { exact: false }))
 
     setCurrentTodos(tempTodos)
   }, [todos.data, pagingTodos.data, filterByCompletionType, filterByPriorityType])
@@ -137,7 +142,14 @@ const TodoPanelQuery = () => {
                 onPrePageClicked={handlePrePageClicked}
                 isPaging={isPaging}
                 pageIndex={currentPageIndex}
-            />
+            >
+              <div>
+                <button className="todo-control-button" onClick={cancelTest}>cancel</button>
+                <button className="todo-control-button" onClick={removeTest}>remove</button>
+                <button className="todo-control-button" onClick={resetTest}>reset</button>
+                <button className="todo-control-button" onClick={invalidateTest}>invalidate</button>
+              </div>
+            </TodoControlCommon>
             <div className="todo-control-options">
                 <TodoControlItem
                     title="filter by completion: "
