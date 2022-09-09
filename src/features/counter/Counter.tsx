@@ -1,34 +1,21 @@
 import React, { useState } from 'react'
 import { useAppSelector, useAppDispatch } from '../../app/hooks'
 import {
-  decrement,
-  increment,
-  incrementByAmount,
+  // decrement,
+  // increment,
+  // incrementByAmount,
   incrementAsync,
   incrementIfOdd,
   selectCount
-} from '../../reducer/counterSlice'
+} from '../../reducer/counterReducer/counterSlice'
 import styles from './Counter.module.css'
-import { useQuery } from 'react-query'
-import { fetchCount } from '../../api/counterAPI'
 
 export function Counter () {
   const count = useAppSelector(selectCount)
   const dispatch = useAppDispatch()
   const [incrementAmount, setIncrementAmount] = useState('2')
-  const [isEnable, setIsEnable] = useState(false)
 
   const incrementValue = Number(incrementAmount) || 0
-  const result = useQuery('increment', async () => await fetchCount(incrementValue), {
-    // The query will not execute until the userId exists
-    enabled: isEnable
-  })
-
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const test = async () => {
-    setIsEnable(true)
-    await result.refetch()
-  }
 
   return (
     <div>
@@ -36,15 +23,21 @@ export function Counter () {
         <button
           className={styles.button}
           aria-label="Decrement value"
-          onClick={() => dispatch(decrement())}
+          onClick={() => {
+            // dispatch(decrement())
+            dispatch({ type: 'decrement' })
+          }}
         >
           -
         </button>
-        {result.isLoading ? <span className={styles.value}>loading...</span> : <span className={styles.value}>{count}</span>}
+        <span className={styles.value}>{count}</span>
         <button
           className={styles.button}
           aria-label="Increment value"
-          onClick={() => dispatch(increment())}
+          onClick={() => {
+            // dispatch(increment())
+            dispatch({ type: 'increment' })
+          }}
         >
           +
         </button>
@@ -58,7 +51,10 @@ export function Counter () {
         />
         <button
           className={styles.button}
-          onClick={() => dispatch(incrementByAmount(incrementValue))}
+          onClick={() => {
+            // dispatch(incrementByAmount(incrementValue))
+            dispatch({ type: 'incrementByAmount', payload: incrementValue })
+          }}
         >
           Add Amount
         </button>

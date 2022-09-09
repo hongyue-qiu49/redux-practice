@@ -1,4 +1,4 @@
-import { TodosState } from '../reducer/todoSlice'
+import { TodosState } from '../type/todo'
 
 export enum FilterTodoEnum {
   Complete = 'complete',

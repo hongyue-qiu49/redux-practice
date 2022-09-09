@@ -3,12 +3,12 @@ import './todoPanel.css'
 import { useAppDispatch, useAppSelector } from '../../app/hooks'
 import {
   selectTodos,
-  init,
-  markEvent,
-  selectPriority,
+  // init,
+  // markEvent,
+  // selectPriority,
   filterByCompletion,
   filterByPriority
-} from '../../reducer/todoSlice'
+} from '../../reducer/todoReducer/todoSlice'
 import TodoItem from './todoItem/todoItem'
 import TodoControlItem from './todoControlItem/todoControlItem'
 import { filterCompletionOptions, filterPriorityOptions, FilterTodoEnum } from '../../constant/todo'
@@ -23,11 +23,19 @@ const TodoPanel = () => {
   const currentTodos = useAppSelector(selectTodos)
 
   const handleTodoItemCheckboxClicked = (index: number) => {
-    dispatch(markEvent(index))
+    // dispatch(markEvent(index))
+    dispatch({ type: 'mark', payload: index })
   }
 
   const handleTodoItemPrioritySelected = (e: ChangeEvent<HTMLSelectElement>, index: number) => {
-    dispatch(selectPriority({ index, value: e.target.value }))
+    // dispatch(selectPriority({ index, value: e.target.value }))
+    dispatch({
+      type: 'selectPriority',
+      payload: {
+        index,
+        value: e.target.value
+      }
+    })
   }
 
   const handlePagingSelect = () => {
@@ -48,7 +56,8 @@ const TodoPanel = () => {
 
   useEffect(() => {
     if (todos.isSuccess) {
-      dispatch(init(todos.data))
+      // dispatch(init(todos.data))
+      dispatch({ type: 'init', payload: todos.data })
     }
   }, [todos.isSuccess])
 

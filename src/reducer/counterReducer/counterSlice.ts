@@ -1,16 +1,7 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
-import { RootState, AppThunk } from '../app/store'
-import { fetchCount } from '../api/counterAPI'
-
-export interface CounterState {
-  value: number
-  status: 'idle' | 'loading' | 'failed'
-}
-
-const initialState: CounterState = {
-  value: 0,
-  status: 'idle'
-}
+import { RootState, AppThunk } from '../../app/store'
+import { fetchCount } from '../../api/counterAPI'
+import { initialCounterState } from '../../type/counter'
 
 // The function below is called a thunk and allows us to perform async logic. It
 // can be dispatched like a regular action: `dispatch(incrementAsync(10))`. This
@@ -28,7 +19,7 @@ export const incrementAsync = createAsyncThunk(
 
 export const counterSlice = createSlice({
   name: 'counter',
-  initialState,
+  initialState: initialCounterState,
   // The `reducers` field lets us define reducers and generate associated actions
   reducers: {
     increment: (state) => {

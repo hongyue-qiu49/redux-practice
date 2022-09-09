@@ -1,41 +1,16 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
-import { RootState } from '../app/store'
-import { FilterTodoEnum } from '../constant/todo'
-
-export interface TodosState {
-  todos: Todo[]
-  filterByCompletion: string
-  filterByPriority: string
-}
-
-export interface Todo {
-  index?: number
-  text: string
-  completed: boolean
-  priority: string
-}
+import { RootState } from '../../app/store'
+import { FilterTodoEnum } from '../../constant/todo'
+import { initialTodoState, Todo } from '../../type/todo'
 
 interface PrioritySelect {
   index: number
   value: string
 }
 
-export const initEmptyState: TodosState = {
-  todos: [
-    {
-      index: 1,
-      text: '',
-      completed: true,
-      priority: 'normal'
-    }
-  ],
-  filterByCompletion: 'all',
-  filterByPriority: 'all'
-}
-
 export const todoSlice = createSlice({
   name: 'todo',
-  initialState: initEmptyState,
+  initialState: initialTodoState,
   // The `reducers` field lets us define reducers and generate associated actions
   reducers: {
     init: (state, action: PayloadAction<Todo[]>) => {

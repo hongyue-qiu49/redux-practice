@@ -1,6 +1,5 @@
 import React, { ChangeEvent, useEffect, useState } from 'react'
 import '../todoPanel/todoPanel.css'
-import { Todo } from '../../reducer/todoSlice'
 import TodoItem from '../todoPanel/todoItem/todoItem'
 import TodoControlItem from '../todoPanel/todoControlItem/todoControlItem'
 import { filterCompletionOptions, filterPriorityOptions, FilterTodoEnum } from '../../constant/todo'
@@ -8,6 +7,7 @@ import { useInfiniteQuery, useMutation, useQuery, useQueryClient } from 'react-q
 import { changeTodoById, fetchInfiniteTodos, fetchTodos } from '../../api/todoAPI'
 import TodoControlCommon from '../todoPanel/todoControlCommon/todoControlCommon'
 import { useTestHook } from '../../hooks/useTestHook'
+import { Todo } from '../../type/todo'
 
 const TodoPanelQuery = () => {
   const [isPaging, setIsPaging] = useState(false)
