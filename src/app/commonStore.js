@@ -1,4 +1,5 @@
-import { createStore, combineReducers } from 'redux'
+import { createStore, combineReducers, applyMiddleware } from 'redux'
+import thunkMiddleware from 'redux-thunk'
 import { todoReducer } from '../reducer/todoReducer/todoCommonReducer'
 import { counterReducer } from '../reducer/counterReducer/counterCommonReducer'
 import { initialCounterState } from '../type/counter'
@@ -11,5 +12,6 @@ export const store = createStore(
   {
     counter: initialCounterState,
     todo: initialTodoState
-  }
+  },
+  applyMiddleware(thunkMiddleware)
 )

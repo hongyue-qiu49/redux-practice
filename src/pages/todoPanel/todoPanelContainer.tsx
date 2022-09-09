@@ -1,6 +1,7 @@
 import { selectFilteredTodos } from '../../reducer/todoReducer/todoSelector'
 import { AppDispatch, RootState } from '../../app/store'
 import { FilterTodoEnum } from '../../constant/todo'
+import { fetchTodoList } from '../../reducer/todoReducer/todoCommonReducer'
 
 export const mapStateToProps = (state: RootState) => {
   return {
@@ -10,6 +11,9 @@ export const mapStateToProps = (state: RootState) => {
 
 export const mapDispatchToPros = (dispatch: AppDispatch) => {
   return {
+    fetchTodoList: () => {
+      fetchTodoList(dispatch)
+    },
     setCompletionType: (type: FilterTodoEnum) => {
       dispatch({ type: 'filterByCompletion', payload: type })
     },

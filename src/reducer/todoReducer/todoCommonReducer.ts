@@ -1,5 +1,7 @@
 import { PayloadAction } from '@reduxjs/toolkit'
 import { initialTodoState, TodosState } from '../../type/todo'
+import { fetchTodos } from '../../api/todoAPI'
+import { AppDispatch } from '../../app/store'
 
 export const todoReducer = (state = initialTodoState, action: PayloadAction<any>): TodosState => {
   switch (action.type) {
@@ -40,4 +42,9 @@ export const todoReducer = (state = initialTodoState, action: PayloadAction<any>
       return { ...state, filterByPriority: action.payload }
     default: return state
   }
+}
+
+export const fetchTodoList = async (dispatch: AppDispatch) => {
+  const response = await fetchTodos(0)
+  dispatch({ type: 'init', payload: response })
 }
