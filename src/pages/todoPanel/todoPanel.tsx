@@ -1,34 +1,25 @@
 import React, { ChangeEvent, useEffect, useState } from 'react'
 import './todoPanel.css'
 import { useAppDispatch, useAppSelector } from '../../app/hooks'
-import {
-  selectTodos,
-  // init,
-  // markEvent,
-  // selectPriority,
-  filterByCompletion,
-  filterByPriority
-} from '../../reducer/todoReducer/todoSlice'
 import TodoItem from './todoItem/todoItem'
 import TodoControlItem from './todoControlItem/todoControlItem'
 import { filterCompletionOptions, filterPriorityOptions, FilterTodoEnum } from '../../constant/todo'
 import { useQuery } from 'react-query'
 import { fetchTodos } from '../../api/todoAPI'
 import TodoControlCommon from './todoControlCommon/todoControlCommon'
+import { selectFilteredTodos } from '../../reducer/todoReducer/todoSelector'
 
 const TodoPanel = () => {
   const [isPaging, setIsPaging] = useState(false)
   const dispatch = useAppDispatch()
   const todos = useQuery('todoList', async ({ signal }) => await fetchTodos(0, signal))
-  const currentTodos = useAppSelector(selectTodos)
+  const currentTodos = useAppSelector((state) => selectFilteredTodos(state.todo))
 
   const handleTodoItemCheckboxClicked = (index: number) => {
-    // dispatch(markEvent(index))
     dispatch({ type: 'mark', payload: index })
   }
 
   const handleTodoItemPrioritySelected = (e: ChangeEvent<HTMLSelectElement>, index: number) => {
-    // dispatch(selectPriority({ index, value: e.target.value }))
     dispatch({
       type: 'selectPriority',
       payload: {
@@ -47,16 +38,15 @@ const TodoPanel = () => {
   }
 
   const handleCompletionOptionClick = (type: FilterTodoEnum) => {
-    dispatch(filterByCompletion(type))
+    dispatch({ type: 'filterByCompletion', payload: type })
   }
 
   const handlePriorityOptionClick = (type: FilterTodoEnum) => {
-    dispatch(filterByPriority(type))
+    dispatch({ type: 'filterByPriority', payload: type })
   }
 
   useEffect(() => {
     if (todos.isSuccess) {
-      // dispatch(init(todos.data))
       dispatch({ type: 'init', payload: todos.data })
     }
   }, [todos.isSuccess])
