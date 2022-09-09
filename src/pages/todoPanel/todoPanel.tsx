@@ -1,33 +1,28 @@
-import React, { ChangeEvent, useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import './todoPanel.css'
-import { useAppDispatch, useAppSelector } from '../../app/hooks'
+import { useAppDispatch } from '../../app/hooks'
 import TodoItem from './todoItem/todoItem'
 import TodoControlItem from './todoControlItem/todoControlItem'
-import { filterCompletionOptions, filterPriorityOptions, FilterTodoEnum } from '../../constant/todo'
+import { filterCompletionOptions, filterPriorityOptions } from '../../constant/todo'
 import { useQuery } from 'react-query'
 import { fetchTodos } from '../../api/todoAPI'
 import TodoControlCommon from './todoControlCommon/todoControlCommon'
-import { selectFilteredTodos } from '../../reducer/todoReducer/todoSelector'
+import { mapDispatchToPros, mapStateToProps } from './todoPanelContainer'
+import { connect, ConnectedProps } from 'react-redux'
 
-const TodoPanel = () => {
+export const TodoPanelContainer = connect(mapStateToProps, mapDispatchToPros)
+export type PropsFromRedux = ConnectedProps<typeof TodoPanelContainer>
+
+const TodoPanel = ({
+  todos: currentTodos,
+  setCompletionType,
+  setPriorityType,
+  setTodoItemMark,
+  setTodoItemPriority
+}: PropsFromRedux) => {
   const [isPaging, setIsPaging] = useState(false)
   const dispatch = useAppDispatch()
   const todos = useQuery('todoList', async ({ signal }) => await fetchTodos(0, signal))
-  const currentTodos = useAppSelector((state) => selectFilteredTodos(state.todo))
-
-  const handleTodoItemCheckboxClicked = (index: number) => {
-    dispatch({ type: 'mark', payload: index })
-  }
-
-  const handleTodoItemPrioritySelected = (e: ChangeEvent<HTMLSelectElement>, index: number) => {
-    dispatch({
-      type: 'selectPriority',
-      payload: {
-        index,
-        value: e.target.value
-      }
-    })
-  }
 
   const handlePagingSelect = () => {
     setIsPaging(true)
@@ -35,14 +30,6 @@ const TodoPanel = () => {
 
   const handleAllSelect = () => {
     setIsPaging(false)
-  }
-
-  const handleCompletionOptionClick = (type: FilterTodoEnum) => {
-    dispatch({ type: 'filterByCompletion', payload: type })
-  }
-
-  const handlePriorityOptionClick = (type: FilterTodoEnum) => {
-    dispatch({ type: 'filterByPriority', payload: type })
   }
 
   useEffect(() => {
@@ -61,8 +48,8 @@ const TodoPanel = () => {
                         index={index}
                         isChecked={item.completed}
                         description={item.text}
-                        onCheckboxClicked={() => handleTodoItemCheckboxClicked(item.index ?? 0)}
-                        onPrioritySelect={(e) => handleTodoItemPrioritySelected(e, item.index ?? 0)}
+                        onCheckboxClicked={() => setTodoItemMark(item.index ?? 0)}
+                        onPrioritySelect={(e) => setTodoItemPriority(e.target.value, item.index ?? 0)}
                         priority={item.priority}
                     />
                 )}
@@ -80,17 +67,17 @@ const TodoPanel = () => {
                     title="filter by completion: "
                     type="completion"
                     options={filterCompletionOptions}
-                    onOptionClick={handleCompletionOptionClick}
+                    onOptionClick={setCompletionType}
                 />
                 <TodoControlItem
                     title="filter by priority: "
                     type="priority"
                     options={filterPriorityOptions}
-                    onOptionClick={handlePriorityOptionClick}
+                    onOptionClick={setPriorityType}
                 />
             </div>
         </section>
     </div>
 }
 
-export default TodoPanel
+export default TodoPanelContainer(TodoPanel)
